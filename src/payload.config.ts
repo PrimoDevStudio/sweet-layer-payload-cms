@@ -12,6 +12,7 @@ import { Products } from './collections/Products'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
 import { Orders } from './collections/Orders'
+import { Posts } from './collections/Posts'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -48,6 +49,7 @@ export default buildConfig({
     Media,
     Users,
     Orders,
+    Posts,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'your-secret-key-change-in-production',
