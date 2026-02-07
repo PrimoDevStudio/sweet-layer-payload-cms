@@ -16,21 +16,26 @@ import { Orders } from './collections/Orders'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Only configure email adapter if SMTP credentials are provided
+const emailAdapter = process.env.SMTP_USER && process.env.SMTP_PASS
+  ? nodemailerAdapter({
+      defaultFromAddress: process.env.SMTP_FROM || 'noreply@sweetlayer.co.za',
+      defaultFromName: 'Sweet Layer Cakery',
+      transportOptions: {
+        host: process.env.SMTP_HOST || 'smtp.resend.com',
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      },
+    })
+  : undefined
+
 export default buildConfig({
   sharp,
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
-  email: nodemailerAdapter({
-    defaultFromAddress: process.env.SMTP_FROM || 'noreply@sweetlayer.co.za',
-    defaultFromName: 'Sweet Layer Cakery',
-    transport: {
-      host: process.env.SMTP_HOST || 'smtp.resend.com',
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      auth: {
-        user: process.env.SMTP_USER || '',
-        pass: process.env.SMTP_PASS || '',
-      },
-    },
-  }),
+  ...(emailAdapter && { email: emailAdapter }),
   admin: {
     user: Users.slug,
     meta: {
