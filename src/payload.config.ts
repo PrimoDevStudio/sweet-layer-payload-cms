@@ -1,6 +1,7 @@
 import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { s3Storage } from '@payloadcms/storage-s3'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -38,6 +39,25 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
+  plugins: [
+    s3Storage({
+      collections: {
+        media: {
+          prefix: 'media',
+        },
+      },
+      bucket: process.env.S3_BUCKET || 'recorded-shoebox-9w-7j7kg',
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+        },
+        region: process.env.S3_REGION || 'auto',
+        endpoint: process.env.S3_ENDPOINT || 'https://t3.storageapi.dev',
+        forcePathStyle: true,
+      },
+    }),
+  ],
   cors: [
     'http://localhost:3000',
     'http://localhost:8000',
