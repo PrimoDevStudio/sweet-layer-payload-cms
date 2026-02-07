@@ -24,10 +24,12 @@
   "type": "module",
   "dependencies": {
     "@payloadcms/db-postgres": "^3.75.0",
+    "@payloadcms/email-nodemailer": "^3.75.0",
     "@payloadcms/next": "^3.75.0",
     "@payloadcms/richtext-lexical": "^3.75.0",
     "@payloadcms/storage-s3": "^3.75.0",
     "next": "^16.1.6",
+    "nodemailer": "^8.0.1",
     "payload": "^3.75.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
